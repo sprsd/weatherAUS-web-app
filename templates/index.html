@@ -1,0 +1,405 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.84.0">
+    <title>Rain Prediction</title>
+
+
+    <!-- Bootstrap core CSS -->
+    <link href="../static/vendor/bootstrap5/css/bootstrap.min.css" rel="stylesheet">
+
+
+    <!-- My work -->
+    <link rel="stylesheet" href="../static/css/mystyle.css">
+
+
+    <!-- Favicons -->
+
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
+
+
+    <!-- Custom styles for this template -->
+    <link href="../static/css/form-validation-css.css" rel="stylesheet">
+</head>
+
+<body class="bg-dark" onload="run()">
+    <img src="" alt="" id="background">
+
+    <div class="container">
+        <main>
+
+            <div class="row g-5 justify-content-center align-items-center">
+
+                <div class="col-md-7 col-lg-8 col-sm-6 mycontainer py-5 px-4 mt-0 mb-5 shadow-lg p-3 mb-5 bg-body rounded">
+                    <h3 class="mb-4 text-center">Will it rain tomorrow ?</h3>
+
+                    {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                    {% for message in messages %}
+                    <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                    {% endwith %}
+
+                    <form class="needs-validation" method="POST" action="/" novalidate>
+                        <div class="row g-3">
+
+                            <!-- Location -->
+                            <div>
+                                <label for="location" class="form-label">Location</label>
+                                <select class="form-select" id="location" name="location" required>
+                                    <option value="Adelaide" selected>Adelaide</option>
+                                    <option value="Albany">Albany</option>
+                                    <option value="Albury">Albury</option>
+                                    <option value="AliceSprings">AliceSprings</option>
+                                    <option value="BadgerysCreek">BadgerysCreek</option>
+                                    <option value="Ballarat">Ballarat</option>
+                                    <option value="Bendigo">Bendigo</option>
+                                    <option value="Brisbane">Brisbane</option>
+                                    <option value="Cairns">Cairns</option>
+                                    <option value="Cobar">Cobar</option>
+                                    <option value="CoffsHarbour">CoffsHarbour</option>
+                                    <option value="Dartmoor">Dartmoor</option>
+                                    <option value="Darwin">Darwin</option>
+                                    <option value="GoldCoast">GoldCoast</option>
+                                    <option value="Hobart">Hobart</option>
+                                    <option value="Katherine">Katherine</option>
+                                    <option value="Launceston">Launceston</option>
+                                    <option value="Melbourne">Melbourne</option>
+                                    <option value="Melbourne Airport">Melbourne Airport</option>
+                                    <option value="Mildura">Mildura</option>
+                                    <option value="Moree">Moree</option>
+                                    <option value="MountGambier">MountGambier</option>
+                                    <option value="MountGinini">MountGinini</option>
+                                    <option value="Newcastle">Newcastle </option>
+                                    <option value="Nhil">Nhil</option>
+                                    <option value="NorahHead">NorahHead</option>
+                                    <option value="NorfolkIsland">NorfolkIsland</option>
+                                    <option value="Nuriootpa">Nuriootpa</option>
+                                    <option value="PearceRAAF">PearceRAAF</option>
+                                    <option value="Penrith">Penrith</option>
+                                    <option value="Perth">Perth</option>
+                                    <option value="PerthAirport">Perth Airport</option>
+                                    <option value="Portland">Portland</option>
+                                    <option value="Richmond">Richmond</option>
+                                    <option value="Sale">Sale</option>
+                                    <option value="Salmon Gums">Salmon Gums</option>
+                                    <option value="Sydney">Sydney</option>
+                                    <option value="SydneyAirport">Sydney Airport</option>
+                                    <option value="Townsville">Townsville</option>
+                                    <option value="Tuggeranong">Tuggeranong</option>
+                                    <option value="Uluru">Uluru</option>
+                                    <option value="WaggaWagga">WaggaWagga</option>
+                                    <option value="Walpole">Walpole</option>
+                                    <option value="Watsonia">Watsonia</option>
+                                    <option value="William Town">William Town</option>
+                                    <option value="Witchcliffe">Witchcliffe</option>
+                                    <option value="Wollongong">Wollongong</option>
+                                    <option value="Woomera">Woomera</option>
+                                </select>
+                                <div class="invalid-feedback">
+                                    Valid location is required
+                                </div>
+                            </div>
+
+                            <!-- Min Temp -->
+                            <div class="col-sm-6">
+                                <label for="mintemp" class="form-label">Min Temp</label>
+                                <input type="text" class="form-control" id="mintemp" name="mintemp" placeholder=""
+                                    value="" required>
+                                <div class="invalid-feedback">
+                                    Valid min temp is required.
+                                </div>
+                            </div>
+
+                            <!-- Max Temp -->
+                            <div class="col-sm-6">
+                                <label for="maxtemp" class="form-label">Max Temp</label>
+                                <input type="text" class="form-control" id="maxtemp" name="maxtemp" placeholder=""
+                                    value="" required>
+                                <div class="invalid-feedback">
+                                    Valid max temp value is required.
+                                </div>
+                            </div>
+
+                            <!-- Rainfall -->
+                            <div class="col-sm-6">
+                                <label for="rainfall" class="form-label">Rainfall</label>
+                                <input type="text" class="form-control" id="rainfall" name="rainfall" placeholder=""
+                                    value="" required>
+                                <div class="invalid-feedback">
+                                    Valid rainfall value is required.
+                                </div>
+                            </div>
+
+                            <!-- Evaporation -->
+                            <div class="col-sm-6">
+                                <label for="evaporation" class="form-label">Evaporation</label>
+                                <input type="text" class="form-control" id="evaporation" name="evaporation"
+                                    placeholder="" value="" required>
+                                <div class="invalid-feedback">
+                                    Valid evaporation value is required.
+                                </div>
+                            </div>
+
+                            <!-- Sunshine -->
+                            <div class="col-sm-6">
+                                <label for="sunshine" class="form-label">Sunshine</label>
+                                <input type="text" class="form-control" id="sunshine" name="sunshine" placeholder=""
+                                    value="" required>
+                                <div class="invalid-feedback">
+                                    Valid sunshine value is required.
+                                </div>
+                            </div>
+
+                            <!-- Wind Gust Direction -->
+                            <div class="col-sm-6">
+                                <label for="windgustdir" class="form-label">Wind Gust Direction</label>
+                                <select class="form-select" id="windgustdir" name="windgustdir" required>
+                                    <option value="N" selected>N</option>
+                                    <option value="W">W</option>
+                                    <option value="S">S</option>
+                                    <option value="E">E</option>
+                                    <option value="NW">NW</option>
+                                    <option value="NE">NE</option>
+                                    <option value="SW">SW</option>
+                                    <option value="SE">SE</option>
+                                    <option value="NNW">NNW</option>
+                                    <option value="NNE">NNE</option>
+                                    <option value="SSW">SSW</option>
+                                    <option value="SSE">SSE</option>
+                                    <option value="WNW">WNW</option>
+                                    <option value="WSW">WSW</option>
+                                    <option value="ENE">ENE</option>
+                                    <option value="ESE">ESE</option>
+                                </select>
+                                <div class="invalid-feedback">
+                                    Valid windgustdir value is required
+                                </div>
+                            </div>
+
+                            <!-- Wind Gust Speed -->
+                            <div class="col-12">
+                                <label for="windgustspeed" class="form-label">Wind Gust Speed</label>
+                                <input type="text" class="form-control" id="windgustspeed" name="windgustspeed"
+                                    placeholder="" required>
+                                <div class="invalid-feedback">
+                                    Your windgustspeed value is required.
+                                </div>
+                            </div>
+
+                            <!-- Wind Direction 9am -->
+                            <div class="col-sm-6">
+                                <label for="winddir9am" class="form-label">Wind Direction 9am</label>
+                                <select class="form-select" id="winddir9am" name="winddir9am" required>
+                                    <option value="N" selected>N</option>
+                                    <option value="W">W</option>
+                                    <option value="S">S</option>
+                                    <option value="E">E</option>
+                                    <option value="NW">NW</option>
+                                    <option value="NE">NE</option>
+                                    <option value="SW">SW</option>
+                                    <option value="SE">SE</option>
+                                    <option value="NNW">NNW</option>
+                                    <option value="NNE">NNE</option>
+                                    <option value="SSW">SSW</option>
+                                    <option value="SSE">SSE</option>
+                                    <option value="WNW">WNW</option>
+                                    <option value="WSW">WSW</option>
+                                    <option value="ENE">ENE</option>
+                                    <option value="ESE">ESE</option>
+                                </select>
+                                <div class="invalid-feedback">
+                                    Valid winddir9am value is required
+                                </div>
+                            </div>
+
+                            <!-- Wind Direction 3pm -->
+                            <div class="col-sm-6">
+                                <label for="winddir3pm" class="form-label">Wind Direction 3pm</label>
+                                <select class="form-select" id="winddir3pm" name="winddir3pm" required>
+                                    <option value="N" selected>N</option>
+                                    <option value="W">W</option>
+                                    <option value="S">S</option>
+                                    <option value="E">E</option>
+                                    <option value="NW">NW</option>
+                                    <option value="NE">NE</option>
+                                    <option value="SW">SW</option>
+                                    <option value="SE">SE</option>
+                                    <option value="NNW">NNW</option>
+                                    <option value="NNE">NNE</option>
+                                    <option value="SSW">SSW</option>
+                                    <option value="SSE">SSE</option>
+                                    <option value="WNW">WNW</option>
+                                    <option value="WSW">WSW</option>
+                                    <option value="ENE">ENE</option>
+                                    <option value="ESE">ESE</option>
+                                </select>
+                                <div class="invalid-feedback">
+                                    Valid winddir3pm value is required
+                                </div>
+                            </div>
+
+                            <!-- Wind Speed 9am -->
+                            <div class="col-sm-6">
+                                <label for="windspeed9am" class="form-label">Wind Speed 9am</label>
+                                <input type="text" class="form-control" id="windspeed9am" name="windspeed9am"
+                                    placeholder="" required>
+                                <div class="invalid-feedback">
+                                    Valid windspeed9am value is required.
+                                </div>
+                            </div>
+
+                            <!-- Wind Speed 3pm -->
+                            <div class="col-sm-6">
+                                <label for="windspeed3pm" class="form-label">Wind Speed 3pm</label>
+                                <input type="text" class="form-control" id="windspeed3pm" name="windspeed3pm"
+                                    placeholder="" required>
+                                <div class="invalid-feedback">
+                                    Valid windspeed3pm value is required.
+                                </div>
+                            </div>
+
+                            <!-- Humidity 9am -->
+                            <div class="col-sm-6">
+                                <label for="humidity9am" class="form-label">Humidity 9am</label>
+                                <input type="text" class="form-control" id="humidity9am" name="humidity9am"
+                                    placeholder="" required>
+                                <div class="invalid-feedback">
+                                    Valid humidity9am value is required.
+                                </div>
+                            </div>
+
+                            <!-- Humidity 3pm -->
+                            <div class="col-sm-6">
+                                <label for="humidity3pm" class="form-label">Humidity 3pm</label>
+                                <input type="text" class="form-control" id="humidity3pm" name="humidity3pm"
+                                    placeholder="" required>
+                                <div class="invalid-feedback">
+                                    Valid humidity3pm value is required.
+                                </div>
+                            </div>
+
+                            <!-- Pressure 9am -->
+                            <div class="col-sm-6">
+                                <label for="pressure9am" class="form-label">Pressure 9am</label>
+                                <input type="text" class="form-control" id="pressure9am" name="pressure9am"
+                                    placeholder="" required>
+                                <div class="invalid-feedback">
+                                    Valid pressure9am value is required.
+                                </div>
+                            </div>
+
+                            <!-- Pressure 3pm -->
+                            <div class="col-sm-6">
+                                <label for="pressure3pm" class="form-label">Pressure 3pm</label>
+                                <input type="text" class="form-control" id="pressure3pm" name="pressure3pm"
+                                    placeholder="" required>
+                                <div class="invalid-feedback">
+                                    Valid pressure3pm value is required.
+                                </div>
+                            </div>
+
+                            <!-- Cloud 9am -->
+                            <div class="col-sm-6">
+                                <label for="cloud9am" class="form-label">Cloud 3pm</label>
+                                <input type="text" class="form-control" id="cloud9am" name="cloud9am" placeholder=""
+                                    required>
+                                <div class="invalid-feedback">
+                                    Valid cloud9am value is required.
+                                </div>
+                            </div>
+
+                            <!-- Cloud 3pm -->
+                            <div class="col-sm-6">
+                                <label for="cloud3pm" class="form-label">Cloud 3pm</label>
+                                <input type="text" class="form-control" id="cloud3pm" name="cloud3pm" placeholder=""
+                                    required>
+                                <div class="invalid-feedback">
+                                    Valid cloud3pm value is required.
+                                </div>
+                            </div>
+
+                            <!-- Temp 9am -->
+                            <div class="col-sm-6">
+                                <label for="temp9am" class="form-label">Temp 3pm</label>
+                                <input type="text" class="form-control" id="temp9am" name="temp9am" placeholder=""
+                                    required>
+                                <div class="invalid-feedback">
+                                    Valid temp9am value is required.
+                                </div>
+                            </div>
+
+                            <!-- Temp 3pm -->
+                            <div class="col-sm-6">
+                                <label for="temp3pm" class="form-label">Temp 3pm</label>
+                                <input type="text" class="form-control" id="temp3pm" name="temp3pm" placeholder=""
+                                    required>
+                                <div class="invalid-feedback">
+                                    Valid temp3pm value is required.
+                                </div>
+                            </div>
+
+                            <!-- Rain Today -->
+                            <div class="d-inline text-center mt-4">
+                                <span class="me-2">Did it rained today ?</span>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="raintoday" id="raintoday1"
+                                        value="Yes">
+                                    <label class="form-check-label" for="raintoday1">Yes</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="raintoday" id="raintoday2"
+                                        value="No" checked>
+                                    <label class="form-check-label" for="raintoday2">No</label>
+                                </div>
+                                <div class="invalid-feedback">
+                                    Valid raintoday value is required
+                                </div>
+                            </div>
+
+                            <hr class="my-4">
+
+                            <div class="text-center">
+                                <button class="w-50 btn btn-primary btn-lg" type="submit">Predict</button>
+                            </div>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../static/vendor/bootstrap5/js/bootstrap.bundle.min.js"></script>
+    <script src="../static/js/form-validation-js.js"></script>
+    <script src="form-validation.js"></script>
+
+
+    <!-- My work -->
+    <script src="../static/vendor/rainyday-js/rainyday.js"></script>
+    <script src="../static/js/myscript.js"></script>
+
+</body>
+
+</html>

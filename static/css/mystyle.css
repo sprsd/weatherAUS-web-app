@@ -1,0 +1,13 @@
+/* Rainyday my css */
+body{
+    margin: 0!important;
+    padding: 0!important;
+    height: 100%!important;
+}
+
+.mycontainer{
+    background-color: white!important;
+    z-index: 111;
+    border-radius: 12px;
+}
+
